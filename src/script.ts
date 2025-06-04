@@ -14,9 +14,48 @@ const loaders = {
 
 window.onload = () => {
   const main = document.querySelector("main") as HTMLElement;
+
   const loadAside = () => {
     const aside = document.querySelector("aside") as HTMLElement;
-    aside.style.overflow = "hidden";
+    const contianer = document.createElement("div");
+    Object.assign(contianer.style, {
+      backgroundColor: "rgba(0, 0, 0, 0.5)",
+      height: "100%",
+    });
+
+    const languagesContainer = document.createElement("div");
+
+    const languageUl = document.createElement("ul");
+    Object.assign(languageUl.style, {
+      display: "flex",
+      listStyle: "none",
+      margin: "0",
+      padding: "1rem",
+      justifyContent: "space-around",
+      borderBottom: "white 0.3rem solid",
+    });
+    for (const lang of ["es", "en", "ja"]) {
+      const languageLi = document.createElement("li");
+      languageLi.addEventListener("mouseenter", () => {
+        languageLi.style.textDecoration = "underline";
+        languageLi.style.cursor = "pointer";
+      });
+      languageLi.addEventListener("mouseleave", () => {
+        languageLi.style.textDecoration = "none";
+        languageLi.style.cursor = "default";
+      });
+      languageLi.innerText = lang;
+      languageUl.appendChild(languageLi);
+    }
+
+    languagesContainer.appendChild(languageUl);
+
+    contianer.appendChild(languagesContainer);
+
+    // aside.style.overflow = "hidden";
+
+    aside.append(contianer);
+
     const ul = document.createElement("ul");
     ul.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
     ul.style.height = "100%";
@@ -46,7 +85,6 @@ window.onload = () => {
       });
       ul.append(li);
     });
-    aside.append(ul);
   };
   loadMusic();
   loadAside();

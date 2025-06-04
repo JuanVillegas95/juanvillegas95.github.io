@@ -3,7 +3,7 @@ import { projects } from "../data/projects";
 export const loadHome = () => {
   const main = document.querySelector("main") as HTMLElement;
   Object.assign(main.style, {
-    backgroundImage: "url('../public/images/home.jpeg')",
+    backgroundImage: "url('/images/home.jpeg')",
     backgroundSize: "cover",
     backgroundPosition: "center",
     backgroundRepeat: "no-repeat",

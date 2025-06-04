@@ -1,15 +1,18 @@
 {
-  "name": "my-vue-app",
+  "name": "something-very-random",
   "private": true,
   "version": "0.0.0",
+  "homepage": "https://juanvillegas95.github.io/",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "tsc && vite build && gh-pages -d dist"
   },
   "devDependencies": {
     "@types/node": "^22.15.23",
+    "gh-pages": "^6.3.0",
     "typescript": "~5.8.3",
     "vite": "^6.3.5"
   }

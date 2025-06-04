@@ -5,7 +5,7 @@ let currentEntryIndex: number | null = null;
 export const loadEntries = () => {
   const main = document.querySelector("main") as HTMLElement;
   Object.assign(main.style, {
-    backgroundImage: "url('../public/images/entries.jpeg')",
+    backgroundImage: `url('/images/entries.jpeg')`,
     backgroundSize: "cover",
     backgroundPosition: "center",
     backgroundRepeat: "no-repeat",

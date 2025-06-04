@@ -1,5 +1,5 @@
 export default {
   build: {
-    outDir: "root/dist",
+    base: "/juanvillegas95.github.io",
   },
 };

@@ -27,4 +27,8 @@ export const projects: Project[] = [
     title: "finances",
     image: "",
   },
+  {
+    title: "tetris",
+    image: "",
+  },
 ];
