@@ -1,8 +1,8 @@
-import { entries } from "../data/entries";
-
 let currentEntryIndex: number | null = null;
+import type { lang } from "../script";
+import { data } from "../data/data";
 
-export const loadEntries = () => {
+export const loadEntries = (lang: lang) => {
   const main = document.querySelector("main") as HTMLElement;
   Object.assign(main.style, {
     backgroundImage: `url('/images/entries.jpeg')`,
@@ -10,8 +10,8 @@ export const loadEntries = () => {
     backgroundPosition: "center",
     backgroundRepeat: "no-repeat",
   });
-  for (let i = entries.length - 1; i >= 0; i--) {
-    const { title, date, description, images } = entries[i];
+  for (let i = data[lang].entries.length - 1; i >= 0; i--) {
+    const { title, date, description, images } = data[lang].entries[i];
 
     const entry = document.createElement("article");
     entry.style.backgroundColor = "rgba(0, 0, 0, 0.85)";

@@ -1,6 +1,8 @@
+import { data } from "../data/data";
 import { projects } from "../data/projects";
+import type { lang } from "../script";
 
-export const loadHome = () => {
+export const loadHome = (lang: lang) => {
   const main = document.querySelector("main") as HTMLElement;
   Object.assign(main.style, {
     backgroundImage: "url('/images/home.jpeg')",
@@ -17,11 +19,10 @@ export const loadHome = () => {
   });
 
   const h1 = document.createElement("h1");
-  h1.innerText = "welcome";
+  h1.innerText = data[lang].home.welcome;
 
   const p = document.createElement("p");
-  p.innerHTML =
-    "hi, this is my personal site on the web. i'll mainly use it because i have full freedom over what i post here. i'm someone who starts a lot of projects but rarely finishes them. maybe having a site to track and share them will help—sounds cool, ig. also this whole website is done with ts, html and css in order to keep it simple";
+  p.innerHTML = data[lang].home.description;
 
   const projectsContianer = document.createElement("div");
   Object.assign(projectsContianer.style, {

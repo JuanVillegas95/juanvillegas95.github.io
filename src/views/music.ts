@@ -1,11 +1,11 @@
 import { songs } from "../data/songs";
-
-const stopAnimation = (animationId: number | null) => {
-  if (animationId) {
-    cancelAnimationFrame(animationId);
-    animationId = null;
-  }
-};
+import type { lang } from "../script";
+// const stopAnimation = (animationId: number | null) => {
+//   if (animationId) {
+//     cancelAnimationFrame(animationId);
+//     animationId = null;
+//   }
+// };
 
 const LINEAR_GRADIENT = `linear-gradient(to bottom, 
   #f0f0f0 0%, 
@@ -48,6 +48,7 @@ class MediaPlayer {
 
   constructor() {
     this.currentSongIndex = 1;
+    this.container = document.createElement("div");
 
     const mainContainer = document.createElement("div");
     Object.assign(mainContainer.style, {
@@ -55,9 +56,10 @@ class MediaPlayer {
       gridColumn: "1 / 2",
       display: "flex",
       flexDirection: "column",
-      backgroundColor: "white",
+      backgroundColor: "black",
       padding: "0 1.5rem",
       borderRadius: ".5rem .5rem 0 0",
+      transition: "grid-template-columns 0.5s ease",
     });
 
     this.title = document.createElement("h1");
@@ -67,8 +69,8 @@ class MediaPlayer {
     this.image = document.createElement("img");
     this.image.src = songs[this.currentSongIndex].image;
     Object.assign(this.image.style, {
-      width: "80%", // Start at 80% when menu is open
-      transition: "width 1 ease", // Reduced from 12s to 0.5s for better UX
+      width: "80%",
+      transition: "width 1 ease",
       height: "auto",
       maxWidth: "20rem",
       objectFit: "cover",
@@ -164,14 +166,33 @@ class MediaPlayer {
     Object.assign(quieterButton.style, BASE_STYLE_BTN);
 
     const menuButton = document.createElement("button");
-    menuButton.innerText = "menu";
     Object.assign(menuButton.style, BASE_STYLE_BTN);
+
+    const menuWrapper = document.createElement("div");
+    Object.assign(menuWrapper.style, {
+      width: "1rem",
+      height: "1rem",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "space-between",
+      margin: "auto",
+    });
+
+    for (let i = 0; i < 3; i++) {
+      const rectangle = document.createElement("div");
+      Object.assign(rectangle.style, {
+        width: "100%",
+        height: "0.2rem",
+        backgroundColor: "black",
+        borderRadius: "1px",
+      });
+      menuWrapper.appendChild(rectangle);
+    }
+
+    menuButton.appendChild(menuWrapper);
 
     nextButton.addEventListener("click", () => {
       this.changeTrack("next");
-      this.image.src = songs[this.currentSongIndex].image;
-      this.title.innerText = songs[this.currentSongIndex].title;
-      this.description.innerText = songs[this.currentSongIndex].description;
     });
 
     new ResizeObserver(() => {
@@ -196,7 +217,7 @@ class MediaPlayer {
       backgroundColor: "black",
       display: "flex",
       flexDirection: "column",
-      padding: ".5rem .3rem",
+      padding: ".5rem .5rem",
       gap: ".3rem",
       borderLeft: "#5B5B65 .2rem solid",
       overflowY: "scroll",
@@ -231,6 +252,20 @@ class MediaPlayer {
         fontSize: ".8rem",
       });
 
+      track.addEventListener("mouseenter", () => {
+        track.style.scale = "1.05";
+        track.style.cursor = "pointer";
+      });
+      track.addEventListener("mouseleave", () => {
+        track.style.scale = "1";
+        track.style.cursor = "default";
+      });
+
+      track.addEventListener("click", () => {
+        track.style.scale = "1.05";
+        track.style.cursor = "pointer";
+      });
+
       track.append(name, duration);
       aside.appendChild(track);
     }
@@ -255,11 +290,10 @@ class MediaPlayer {
       // prevButton,
       // nextButton,
       // quieterButton,
-      louderButton,
+      // louderButton,
       menuButton
     );
 
-    this.container = document.createElement("div");
     this.container.classList.add("media-player-container");
 
     Object.assign(this.container.style, {
@@ -274,6 +308,7 @@ class MediaPlayer {
       width: "90vw",
       maxWidth: "30rem",
       height: "25rem",
+      transition: "grid-template-columns 0.5s ease",
     });
 
     menuButton.addEventListener("click", () => {
@@ -285,22 +320,16 @@ class MediaPlayer {
           borderLeft: "none",
           overflow: "hidden",
         });
-        mainContainer.style.gridColumn = "1 / 3";
-
-        // Small delay to allow grid to update
-        requestAnimationFrame(() => {
-          this.image.style.width = "100%";
-        });
+        this.container.style.gridTemplateColumns = "1fr 0fr";
       } else {
-        // Expanding menu
         Object.assign(aside.style, {
           maxWidth: "15rem",
-          padding: ".5rem .3rem",
+          padding: ".5rem .5rem",
           borderLeft: "#5B5B65 .2rem solid",
           overflowY: "scroll",
         });
-        mainContainer.style.gridColumn = "1 / 2";
         this.image.style.width = "80%";
+        this.container.style.gridTemplateColumns = "2fr 1fr";
       }
     });
 
@@ -328,6 +357,10 @@ class MediaPlayer {
         this.currentSongIndex = Math.floor(Math.random() * songs.length);
         break;
     }
+    this.image.src = songs[this.currentSongIndex].image;
+    this.title.innerText = songs[this.currentSongIndex].title;
+    this.description.innerText = songs[this.currentSongIndex].description;
+    //todo the function
   }
 
   public load() {
@@ -335,7 +368,7 @@ class MediaPlayer {
   }
 }
 
-export const loadMusic = () => {
+export const loadMusic = (lang: lang) => {
   const main = document.querySelector("main");
   if (!main) return;
 
@@ -344,10 +377,7 @@ export const loadMusic = () => {
     backgroundSize: "cover",
     backgroundPosition: "center",
     backgroundRepeat: "no-repeat",
-    overflow: "hidden",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
+    overflowY: "hidden",
   });
 
   const mediaPlayer = new MediaPlayer();
